@@ -8,7 +8,7 @@ export const RESET_CATEGORIES = 'RESET_CATEGORIES';
 
 export function fetchCategories() {
 	return (dispatch) => {
-		return fetch('http://localhost/react_bookstore/public/api/category/fetch', { method: 'GET'})
+		return fetch('http://localhost/bookstore/public/api/category/fetch', { method: 'GET'})
 		.then( response => Promise.all([response, response.json()]))
 		.then(([response, json]) =>{
 			if(response.status === 200){
