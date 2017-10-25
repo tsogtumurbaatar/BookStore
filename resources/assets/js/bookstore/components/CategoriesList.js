@@ -2,17 +2,29 @@ import React from 'react';
 import { Link } from 'react-router';
 
 
-export const CategoriesList = props => {
-console.log(props);
-const categories = this.props.categories['categories'];
-const loading = this.props.categories.loading;
-const error = this.props.categories.error;
+export class CategoriesList extends React.Component{
+ componentWillMount() {
+    this.props.fetchData();
+  }	
+
+render(){	
+console.log(this.props);
+const categories = this.props.categoriesToProps.categories;
+const loading = this.props.categoriesToProps.loading;
+const error = this.props.categoriesToProps.error;
+
+  if(loading) {
+      return <div className="container"><h1>Categories</h1><h3>Loading...</h3><img src="images/giphy.gif"/></div>      
+    } else if(error) {
+      return <div className="alert alert-danger">Error: {error.message}</div>
+    }
+
 
 	return (
 		<div className="container">
 		<h2>Categories List : </h2>          
 		<Link to="/category/new" activeClassName="active">Add new category</Link>
-		<input type="button" onClick={props.fetchData} value="Fetch data" className="form-control btn btn-warning" />
+		<input type="button" onClick={this.props.fetchData} value="Fetch data" className="form-control btn btn-warning" />
 		<table className="table">
 		<thead>
 		<tr>
@@ -22,7 +34,7 @@ const error = this.props.categories.error;
 		</tr>
 		</thead>
 		<tbody>
-		{this.categories.map(category=>(
+		{categories.map(category=>(
 			<tr key={category.cat_id}>
 			<td>{category.cat_id}</td>
 			<td>{category.cat_name}</td>
@@ -33,4 +45,6 @@ const error = this.props.categories.error;
 		</table>
 		</div>
 		)
+}
+
 }

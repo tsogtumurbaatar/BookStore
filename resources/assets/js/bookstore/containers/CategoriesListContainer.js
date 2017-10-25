@@ -15,7 +15,7 @@ const mapDispatchToProps = (dispatch) =>{
 
 const mapStateToProps = (state) =>{
 	return {
-		categories:state.category.categoriesList
+		categoriesToProps:state.category.categoriesList
 	}
 }
 

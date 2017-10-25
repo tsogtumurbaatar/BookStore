@@ -11,11 +11,14 @@ export const category = (state= initial_state, action) =>{
 	let error;
 	switch(action.type) {
 		case types.FETCH_CATEGORIES:
-		return [ ...state, categoriesList: {categories:[], error: null, loading: true} ]; 
+		{
+		return  Object.assign({}, state, { categoriesList : {categories:[], error: null, loading: true}} ); 
+		}
 
 		case types.FETCH_CATEGORIES_SUCCESS:
-		return [ ...state, categoriesList: {categories: action.payload, error:null, loading: false} ];
-
+		{
+		return Object.assign({},state, { categoriesList: {categories: action.payload, error:null, loading: false}} );
+		}
 		case types.FETCH_CATEGORIES_FAILURE:
     	error = action.payload;
    		return state;

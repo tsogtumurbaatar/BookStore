@@ -13,6 +13,7 @@ class CategoryController extends Controller
     	$my_array = DB::table('categories')
 		->orderBy('cat_id', 'desc')
 		->get();
+		sleep(3);
 		return \Response::json($my_array);
     }
 
