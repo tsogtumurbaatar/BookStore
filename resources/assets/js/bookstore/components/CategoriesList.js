@@ -4,6 +4,10 @@ import { Link } from 'react-router';
 
 export const CategoriesList = props => {
 console.log(props);
+const categories = this.props.categories['categories'];
+const loading = this.props.categories.loading;
+const error = this.props.categories.error;
+
 	return (
 		<div className="container">
 		<h2>Categories List : </h2>          
@@ -18,7 +22,7 @@ console.log(props);
 		</tr>
 		</thead>
 		<tbody>
-		{props.categories.map(category=>(
+		{this.categories.map(category=>(
 			<tr key={category.cat_id}>
 			<td>{category.cat_id}</td>
 			<td>{category.cat_name}</td>

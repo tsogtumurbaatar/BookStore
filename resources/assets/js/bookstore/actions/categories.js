@@ -8,6 +8,7 @@ export const RESET_CATEGORIES = 'RESET_CATEGORIES';
 
 export function fetchCategories() {
 	return (dispatch) => {
+		dispatch(fetchCategoriesStart())
 		return fetch('http://localhost/bookstore/public/api/category/fetch', { method: 'GET'})
 		.then( response => Promise.all([response, response.json()]))
 		.then(([response, json]) =>{
@@ -19,6 +20,12 @@ export function fetchCategories() {
 			}
 		})
 	}
+}
+
+export function fetchCategoriesStart(posts) {
+  return {
+    type: FETCH_CATEGORIES
+  };
 }
 
 export function fetchCategoriesSuccess(posts) {

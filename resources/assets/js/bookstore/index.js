@@ -9,7 +9,7 @@ import { fetchCategories } from './actions/categories';
 
 const store=configureStore();
 
-store.dispatch(fetchCategories());
+// store.dispatch(fetchCategories());
 
 ReactDOM.render(
 	<Provider store={store}>
