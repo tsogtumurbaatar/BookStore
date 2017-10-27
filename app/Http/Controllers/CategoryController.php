@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use DB;
 use App\Category;
 
@@ -13,43 +14,60 @@ class CategoryController extends Controller
     	$my_array = DB::table('categories')
 		->orderBy('cat_id', 'desc')
 		->get();
-		sleep(3);
 		return \Response::json($my_array);
     }
 
-    function deleteApi(Request $request)
+    function fetchOneApi(Request $request, $id)
+    {
+		 $my_array = DB::table('categories')
+		->where('cat_id', $id)
+		->first();
+		return \Response::json($my_array);
+    }
+
+    function removeApi(Request $request)
 	{
-		 $ids = $request['ids'];
+		 $ids = $request['cat_ids'];
+
+		 $deleted_categories = new Collection();
 		 
 		foreach ($ids as $id) {
-		Books::where('id',$id)->delete();	
+		$deleted_categories->push(Category::where('cat_id',$id)->delete());	
 		}
 		 
-		 return response()->json('success');
+		 return response()->json($deleted_categories);
 	}
 
 	function addApi(Request $request)
 	{
-		$newpost =  Category::create([
-			'book_name' => $request['book_name'],
-			'book_desc' => $request['book_desc'],
-			'cat_id' => $request['cat_id']
-			]);
-		$newpost->id = $newpost->id;
 
-		return response()->json($newpost);
+		$newcat =  Category::create([
+			'cat_name' => $request['cat_name'],
+			'cat_desc' => $request['cat_desc']
+			]);
+		$newcat->cat_id = $newcat->id;
+
+		return response()->json($newcat);
 	}
 
-	function updateApi(Request $request)
+	function saveApi(Request $request)
 	{
-		DB::table('categories')
-		->where('id',$request['id'])
+		$updatedCat = DB::table('categories')
+		->where('cat_id',$request['cat_id'])
 		->update([
-			'book_name' => $request['book_name'],
-			'book_desc' => $request['book_desc'],
-			'cat_id' => $request['cat_id']
+			'cat_name' => $request['cat_name'],
+			'cat_desc' => $request['cat_desc'],
 			]);
 
-		return response()->json($request);
+		if($updatedCat)
+		{
+			 $my_array = DB::table('categories')
+			->where('cat_id', $request['cat_id'])
+			->first();
+			return \Response::json($my_array);
+		}
+		
+		else
+		return response()->json($updatedCat);
 	}
 }

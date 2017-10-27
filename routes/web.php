@@ -23,6 +23,8 @@ Route::group(['middleware' => 'auth:api'], function(){
 });
 
 Route::get('/api/category/fetch', 'CategoryController@indexApi');
-// Route::post('/api/deletebooks', 'BooksController@deletebooksApi');
-// Route::post('/api/addbook', 'BooksController@addbookApi');
-// Route::post('/api/updatebook', 'BooksController@updatebookApi');
+Route::get('/api/category/fetch/{id}', 'CategoryController@fetchOneApi');
+Route::post('/api/category/add', 'CategoryController@addApi');
+Route::post('/api/category/remove', 'CategoryController@removeApi');
+Route::post('/api/category/save', 'CategoryController@saveApi');
+

@@ -7,7 +7,7 @@ import configureStore from './store/configureStore';
 
 import { fetchCategories } from './actions/categories';
 
-const store=configureStore();
+export const store=configureStore();
 
 // store.dispatch(fetchCategories());
 
