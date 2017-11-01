@@ -1,21 +1,32 @@
 import React from 'react';
 import {CategoriesList} from '../components/CategoriesList'; 
 import {connect} from 'react-redux';
-import { fetchCategories, removeCategories, removeCategoriesReset } from '../actions/categories';
+import { fetchCategories, removeCategories, removeCategoriesReset, filterAddCategory } from '../actions/categories';
 
 const mapDispatchToProps = (dispatch) =>{
 	return {
 		fetchData:() => 					{ dispatch(fetchCategories())},
 		resetMe:() => 						{ dispatch(removeCategoriesReset())},
 		handleDeleteEvent:(categories) => 	{ dispatch(removeCategories(categories))},
-		handleEditEvent:(category) => 		{ dispatch(types.itemsUpdateData('http://localhost/redux/public/api/updatebook', book));},
+		handleSearchEvent:(text)=>			{ dispatch(filterAddCategory(text))}
 	}
+}
+
+
+const searchEventHandle =(categories, filter) =>{
+		var updatedList = categories;
+		updatedList = updatedList.filter(function(item){
+			return item.cat_name.toLowerCase().search(filter.toLowerCase()) !== -1;
+		});
+		return updatedList
 }
 
 
 const mapStateToProps = (state) =>{
 	return {
-		categoriesToProps:state.category.categoriesList,
+		categoriesToProps:searchEventHandle(state.category.categoriesList.categories, state.category.filterCategory),
+		loadingToProps : state.category.categoriesList.loading,
+		errorToProps : state.category.categoriesList.error,
 		removedToProps:state.category.deletedCategories
 	}
 }

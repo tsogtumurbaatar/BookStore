@@ -3,13 +3,18 @@ const initial_state = {
 					categoriesList :{categories:[], error:null, loading:false},
 					newCategory: {category:null, error:null, loading:false},
 					activeCategory:{category:null, error:null, loading:false, updated:false},
-					deletedCategories : {categories:[], error:null, loading:false}
+					deletedCategories : {categories:[], error:null, loading:false},
+          filterCategory : ''
 					}
 
 
 export const category = (state= initial_state, action) =>{
   let error;
 	switch(action.type) {
+    case types.FILTER_ADD_CATEGORY:
+    {
+    return  Object.assign({}, state, { filterCategory : action.text} ); 
+    }
 		case types.FETCH_CATEGORIES:
 		{
      

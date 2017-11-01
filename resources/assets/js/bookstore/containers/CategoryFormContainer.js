@@ -1,7 +1,7 @@
 import React from 'react';
 import {CategoryForm} from '../components/CategoryForm';
 import {connect} from 'react-redux';
-import { addCategory, addCategoryReset, fetchCategory, fetchCategoryReset, saveCategory } from '../actions/categories';
+import { addCategory, addCategoryReset, fetchCategory, fetchCategoryReset, saveCategory, fetchCategories } from '../actions/categories';
 
 
 const mapDispatchToProps = (dispatch) =>{

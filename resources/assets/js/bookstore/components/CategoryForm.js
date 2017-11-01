@@ -44,21 +44,22 @@ export class CategoryForm extends React.Component{
 	const error = this.props.categoriesToProps.error;	
 
 	if(loading) {
-      return <div className="container"><h1>Add New Category</h1><h3>Loading...</h3><img src="images/giphy.gif"/></div>      
+      return <div className="container"><h2>Add new category</h2><h3>Loading...</h3><img id="imgloading" src="images/giphy.gif"/></div>      
     } else if(error) {
       return <div className="alert alert-danger">Error: {error.message}</div>
     }
 
     if(this.props.activeCategoryToProps.loading) {
-      return <div className="container"><h1>Editing Category</h1><h3>Loading...</h3><img src="images/giphy.gif"/></div>      
+      return <div className="container"><h2>Editing category</h2><h3>Loading...</h3><img id="imgloading" src="images/giphy.gif"/></div>      
     } else if(this.props.activeCategoryToProps.error) {
       return <div className="alert alert-danger">Error: {this.props.activeCategoryToProps.error.message}</div>
     }
 
 		if(this.props.activeCategoryToProps.category)
 			return (
-			<div>
-			{this.props.activeCategoryToProps.updated ? 'Edited successfully ID : '+ this.props.activeCategoryToProps.category.cat_id:''}
+			<div className="container">
+			<h2>Categories edit : </h2>    
+			{this.props.activeCategoryToProps.updated ? <div className="alert alert-success"><strong>Success!</strong> The category edited, ID - {this.props.activeCategoryToProps.category.cat_id}</div>:''}
 			<div className="form-group">
 			<label htmlFor="catname">Category name:</label>
 			<input key={Math.random()} type="text" className="form-control" id="cat_name" defaultValue={this.props.activeCategoryToProps.category.cat_name}/>
@@ -68,18 +69,19 @@ export class CategoryForm extends React.Component{
 			<input key={Math.random()} type="text" className="form-control" id="cat_desc" defaultValue={this.props.activeCategoryToProps.category.cat_desc}/>
 			</div>
 			<div className="col-md-6">	
-			<button type="submit" className="btn btn-primary form-control" onClick={()=>this.handleSaveEvent()}>Save Category</button>
+			<button type="submit" className="btn btn-primary form-control" onClick={()=>this.handleSaveEvent()}><span className="glyphicon glyphicon-ok"></span> Save Category</button>
 			</div>
 			<div className="col-md-6">	
 		
-			<Link to="/category" className="btn btn-warning form-control">Go back</Link>
+			<Link to="/category" className="btn btn-warning form-control"><span className="glyphicon glyphicon-share"></span> Go back</Link>
 			</div>
 			</div>
 			) 
 		else
 			return (
-			<div>
-			{newCategory ? 'Added successfully ID : '+newCategory.cat_id:''}
+			<div className="container">
+			<h2>Categories add : </h2>    
+			{newCategory ? <div className="alert alert-success"><strong>Success!</strong> New category add, ID - {newCategory.cat_id}</div>:''}
 			<div className="form-group">
 			<label htmlFor="catname">Category name:</label>
 			<input type="text" className="form-control" id="cat_name"/>
@@ -89,11 +91,11 @@ export class CategoryForm extends React.Component{
 			<input type="text" className="form-control" id="cat_desc" />
 			</div>
 			<div className="col-md-6">	
-			<button type="submit" className="btn btn-primary form-control" onClick={()=>this.handleAddEvent()}>Add New Category</button>
+			<button type="submit" className="btn btn-primary form-control" onClick={()=>this.handleAddEvent()}><span className="glyphicon glyphicon-ok"></span> Add New Category</button>
 			</div>
 			<div className="col-md-6">	
 		
-			<Link to="/category" className="btn btn-warning form-control">Go back</Link>
+			<Link to="/category" className="btn btn-warning form-control"><span className="glyphicon glyphicon-share"></span> Go back</Link>
 			</div>
 			</div>
 			) 

@@ -23,6 +23,14 @@ export const SAVE_CATEGORY_SUCCESS = 'SAVE_CATEGORY_SUCCESS';
 export const SAVE_CATEGORY_FAILURE = 'SAVE_CATEGORY_FAILURE';
 export const RESET_SAVE_CATEGORY = 'RESET_SAVE_CATEGORY';
 
+export const FILTER_ADD_CATEGORY = 'FILTER_ADD_CATEGORY';
+
+export function filterAddCategory(text) {
+  return {
+    type: FILTER_ADD_CATEGORY,
+    text:text
+  };
+}
 
 export function fetchCategories() {
 	return (dispatch) => {
@@ -75,7 +83,8 @@ export function addCategory(category) {
 		.then( response => Promise.all([response, response.json()]))
 		.then(([response, json]) =>{
 			if(response.status === 200){
-				dispatch(addCategorySuccess(json))
+				dispatch(addCategorySuccess(json));
+				dispatch(fetchCategories());
 			}
 			else{
 				dispatch(addCategoryFailure())
@@ -218,7 +227,8 @@ export function saveCategory(category) {
 		.then( response => Promise.all([response, response.json()]))
 		.then(([response, json]) =>{
 			if(response.status === 200){
-				dispatch(saveCategorySuccess(json))
+				dispatch(saveCategorySuccess(json));
+				dispatch(fetchCategories());
 			}
 			else{
 				dispatch(saveCategoryFailure())
