@@ -1,24 +1,33 @@
 import React from 'react';
+import {BookForm} from '../components/BookForm';
+import {connect} from 'react-redux';
+import { addBook, addBookReset, fetchBook, fetchBookReset, saveBook, fetchBooks } from '../actions/books';
 
-export class BookFormContainer extends React.Component{
-	render()
-	{
-		return(
-			<div>
-			<div className="form-group">
-			<label htmlFor="email">Email address:</label>
-			<input type="email" className="form-control" id="email"/>
-			</div>
-			<div className="form-group">
-			<label htmlFor="pwd">Password:</label>
-			<input type="password" className="form-control" id="pwd"/>
-			</div>
-			<div className="checkbox">
-			<label><input type="checkbox"/> Remember me</label>
-			</div>
-			<button type="submit" className="btn btn-default">Submit</button>
-			</div>
-			)
+
+const mapDispatchToProps = (dispatch) =>{
+	return {
+		resetMe:() => 						{ dispatch(addBookReset())},
+		resetMeActive:() => 				{ dispatch(fetchBookReset())},
+		handleAddEvent:(book) => 			{ dispatch(addBook(book))},
+		handleSaveEvent:(book) => 			{ dispatch(saveBook(book))},
+		fetchBook:(book_id) => 				{ dispatch(fetchBook(book_id))}
 	}
-
 }
+
+
+const mapStateToProps = (state, props) =>{
+	return {
+		categoriesToProps:state.category.categoriesList,
+		
+		bookidToProps:props.bookid,
+		activeBookToProps:state.book.activeBook,
+		updatedToProps :state.category.updated,
+
+
+	}
+}
+
+export const BookFormContainer =  connect( 
+	mapStateToProps,
+	mapDispatchToProps
+	)(BookForm)

@@ -12,7 +12,7 @@ class CategoryController extends Controller
     function indexApi()
     {
     	$my_array = DB::table('categories')
-		->orderBy('cat_id', 'desc')
+		->orderBy('cat_id', 'asc')
 		->get();
 		return \Response::json($my_array);
     }

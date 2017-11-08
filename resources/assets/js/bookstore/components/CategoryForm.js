@@ -44,20 +44,20 @@ export class CategoryForm extends React.Component{
 	const error = this.props.categoriesToProps.error;	
 
 	if(loading) {
-      return <div className="container"><h2>Add new category</h2><h3>Loading...</h3><img id="imgloading" src="images/giphy.gif"/></div>      
+      return <div><h2>Add new category</h2><h3>Loading...</h3><img id="imgloading" src="images/giphy.gif"/></div>      
     } else if(error) {
       return <div className="alert alert-danger">Error: {error.message}</div>
     }
 
     if(this.props.activeCategoryToProps.loading) {
-      return <div className="container"><h2>Editing category</h2><h3>Loading...</h3><img id="imgloading" src="images/giphy.gif"/></div>      
+      return <div><h2>Editing category</h2><h3>Loading...</h3><img id="imgloading" src="images/giphy.gif"/></div>      
     } else if(this.props.activeCategoryToProps.error) {
       return <div className="alert alert-danger">Error: {this.props.activeCategoryToProps.error.message}</div>
     }
 
 		if(this.props.activeCategoryToProps.category)
 			return (
-			<div className="container">
+			<div>
 			<h2>Categories edit : </h2>    
 			{this.props.activeCategoryToProps.updated ? <div className="alert alert-success"><strong>Success!</strong> The category edited, ID - {this.props.activeCategoryToProps.category.cat_id}</div>:''}
 			<div className="form-group">
@@ -79,7 +79,7 @@ export class CategoryForm extends React.Component{
 			) 
 		else
 			return (
-			<div className="container">
+			<div>
 			<h2>Categories add : </h2>    
 			{newCategory ? <div className="alert alert-success"><strong>Success!</strong> New category add, ID - {newCategory.cat_id}</div>:''}
 			<div className="form-group">

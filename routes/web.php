@@ -28,3 +28,9 @@ Route::post('/api/category/add', 'CategoryController@addApi');
 Route::post('/api/category/remove', 'CategoryController@removeApi');
 Route::post('/api/category/save', 'CategoryController@saveApi');
 
+Route::get('/api/book/fetch', 'BookController@indexApi');
+Route::get('/api/book/fetch/{id}', 'BookController@fetchOneApi');
+Route::post('/api/book/add', 'BookController@addApi');
+Route::post('/api/book/remove', 'BookController@removeApi');
+Route::post('/api/book/save', 'BookController@saveApi');
+

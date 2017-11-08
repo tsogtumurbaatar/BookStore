@@ -1,14 +1,12 @@
 import {combineReducers} from 'redux';
-import {todos} from './todos';
-import {setFilter} from './setFilter';
 import {category} from './category_reducer';
+import {book} from './book_reducer';
 
 
 
 const rootReducer = combineReducers({
-	todos : todos,
-	setFilter : setFilter,
-	category : category
+	category : category,
+	book : book
 })
 
 export default rootReducer

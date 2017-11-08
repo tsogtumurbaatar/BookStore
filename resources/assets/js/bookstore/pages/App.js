@@ -9,7 +9,7 @@ class App extends React.Component {
 				<nav>
 			      	<IndexLink to="/" activeClassName="active">Home</IndexLink>
 			      	{" | "}
-			      	<Link to="/books" activeClassName="active">Books</Link>
+			      	<Link to="/book" activeClassName="active">Books</Link>
 			      	{" | "}
 			      	<Link to="/category" activeClassName="active">Category</Link>
 			      	{" | "}

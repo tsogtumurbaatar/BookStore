@@ -150,6 +150,7 @@ export class CategoriesList extends React.Component{
 		const error = this.props.errorToProps;
 		const removedCategory = this.props.removedToProps.categories;
 
+		var func;
 		switch(this.state.sortType){
 			case 0: categories.sort(this.sortByCatID); break;
 			case 1: categories.sort(this.sortByCatIDDesc); break;
@@ -172,13 +173,13 @@ export class CategoriesList extends React.Component{
 		}
 
 		if(loading) {
-			return <div className="container"><h2>Categories list : </h2><h3>Loading...</h3><img id="imgloading" src="images/giphy.gif"/></div>      
+			return <div><h2>Categories list : </h2><h3>Loading...</h3><img id="imgloading" src="images/giphy.gif"/></div>      
 		} else if(error) {
 			return <div className="alert alert-danger">Error: {error.message}</div>
 		} 
 
 		return (
-			<div className="container">
+			<div>
 			<h2>Categories list : </h2>          
 			<div className="row">
 			<div className="col-md-4"><Link to="/category/new" className="form-control btn btn-primary"><span className="glyphicon glyphicon-plus"></span> Add</Link></div>		
@@ -218,7 +219,7 @@ export class CategoriesList extends React.Component{
 			</table>
 			<nav className="text-center">
 			<ul className="pagination">
-			{pageNumbers.map(number => (
+			{pageNumbers.map((number) => (
 				<li key={number} className="page-item">
 				<a className="page-link" onClick={this.handleClick}  id={number}>	            
 				{number}

@@ -5,8 +5,10 @@ class BookForm extends React.Component{
 	
 	render()
 	{
+		if(this.props.params.bookid)
+		return <BookFormContainer bookid={this.props.params.bookid}/>
+		else
 		return <BookFormContainer />
-
 	}
 
 }
