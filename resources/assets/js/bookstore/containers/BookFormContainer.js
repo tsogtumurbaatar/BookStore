@@ -17,13 +17,11 @@ const mapDispatchToProps = (dispatch) =>{
 
 const mapStateToProps = (state, props) =>{
 	return {
-		categoriesToProps:state.category.categoriesList,
-		
 		bookidToProps:props.bookid,
 		activeBookToProps:state.book.activeBook,
-		updatedToProps :state.category.updated,
-
-
+		newBookToProps:state.book.newBook,
+		categoriesToProps:state.category.categoriesList,
+		lngsToProps:state.language.lngsList
 	}
 }
 

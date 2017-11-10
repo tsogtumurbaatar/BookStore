@@ -13,7 +13,7 @@ class App extends React.Component {
 			      	{" | "}
 			      	<Link to="/category" activeClassName="active">Category</Link>
 			      	{" | "}
-			      	<Link to="/category" activeClassName="active">Language</Link>
+			      	<Link to="/language" activeClassName="active">Language</Link>
 			      	{" | "}
 			      	<Link to="/category" activeClassName="active">User Reviews</Link>
 			    </nav>

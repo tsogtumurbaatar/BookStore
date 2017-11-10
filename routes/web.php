@@ -34,3 +34,9 @@ Route::post('/api/book/add', 'BookController@addApi');
 Route::post('/api/book/remove', 'BookController@removeApi');
 Route::post('/api/book/save', 'BookController@saveApi');
 
+Route::get('/api/lng/fetch', 'LngController@indexApi');
+Route::get('/api/lng/fetch/{id}', 'LngController@fetchOneApi');
+Route::post('/api/lng/add', 'LngController@addApi');
+Route::post('/api/lng/remove', 'LngController@removeApi');
+Route::post('/api/lng/save', 'LngController@saveApi');
+

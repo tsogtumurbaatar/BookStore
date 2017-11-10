@@ -11,8 +11,9 @@ export class BookForm extends React.Component{
 		
 		this.state = {
 			files:[],
-			imagePreviewUrl:[],
+			imagePreviewUrl:['images.jpg','images.jpg','images.jpg','images.jpg'],
 			uploadedFiles:[],
+			downloadedFiles:[],
 			book_name : '',
 			book_desc : '',
 			book_motto :'',
@@ -65,27 +66,64 @@ export class BookForm extends React.Component{
 			book_price2 : nextProps.activeBookToProps.book.book_price2,
 			cat_id : nextProps.activeBookToProps.book.cat_id,
 			lng_id : nextProps.activeBookToProps.book.lng_id,
-  			imagePreviewUrl: [nextProps.activeBookToProps.book.book_img1,nextProps.activeBookToProps.book.book_img2,nextProps.activeBookToProps.book.book_img3,nextProps.activeBookToProps.book.book_img4]
+  			imagePreviewUrl: [nextProps.activeBookToProps.book.book_img1,nextProps.activeBookToProps.book.book_img2,nextProps.activeBookToProps.book.book_img3,nextProps.activeBookToProps.book.book_img4],
+  			downloadedFiles : [nextProps.activeBookToProps.book.book_img1,nextProps.activeBookToProps.book.book_img2,nextProps.activeBookToProps.book.book_img3,nextProps.activeBookToProps.book.book_img4]
   			})
   		}
   	}
 
   	handleSaveEvent(event)
 	{
-	if(this.props.catidToProps)
-		{
-		const newcategory = {
-			"cat_id" : this.props.catidToProps,
-			"cat_name" : document.getElementById('cat_name').value,
-			"cat_desc" : document.getElementById('cat_desc').value
+	if(this.state.files.length!=0)
+		if(this.state.uploadedFiles==0)
+			{ window.alert('Upload your images first!')
+			  return;	
 			}
-		this.props.handleSaveEvent(newcategory);
+
+
+	if(this.props.bookidToProps)
+		{
+		var downloadedFiles = this.state.downloadedFiles;
+		if(downloadedFiles[3]=='images.jpg') downloadedFiles.splice(3,1);
+		if(downloadedFiles[2]=='images.jpg') downloadedFiles.splice(2,1);
+		if(downloadedFiles[1]=='images.jpg') downloadedFiles.splice(1,1);
+		if(downloadedFiles[0]=='images.jpg') downloadedFiles.splice(0,1);
+		
+		var myarray = downloadedFiles.concat(this.state.uploadedFiles);
+
+		var img1='images.jpg',img2='images.jpg',img3='images.jpg',img4='images.jpg';
+		if(typeof myarray[0] !='undefined') {img1 = myarray[0]}
+		if(typeof myarray[1] !='undefined') {img2 = myarray[1]}
+		if(typeof myarray[2] !='undefined') {img3 = myarray[2]}
+		if(typeof myarray[3] !='undefined') {img4 = myarray[3]}
+
+		const editedbook = {
+		"book_id" : this.props.bookidToProps,
+		"book_name" : this.state.book_name,
+		"book_desc" : this.state.book_desc,
+		"book_motto" : this.state.book_motto,
+		"book_isbn" : this.state.book_isbn,
+		"book_publisher" : this.state.book_publisher,
+		"book_author" : this.state.book_author,
+		"book_price1" : this.state.book_price1,
+		"book_price2" : this.state.book_price2,
+		"cat_id" : this.state.cat_id ? this.state.cat_id : '1',
+		"lng_id" : this.state.lng_id ? this.state.lng_id : '1',
+		"book_img1" : img1,
+		"book_img2" : img2,
+		"book_img3" : img3,
+		"book_img4" : img4
+		}
+	
+
+		this.props.handleSaveEvent(editedbook);
 		}	
 	}
 
 	_handleSubmit(e) {
 		e.preventDefault();
 		const files = this.state.files;
+		var uploadedFiles = this.state.uploadedFiles;
 
 		for(let i=0; i<files.length; i++)
 		{
@@ -99,16 +137,12 @@ export class BookForm extends React.Component{
 			}
 
 			if (response.body.secure_url !== '') {
-				var uploadedFiles = this.state.uploadedFiles;
-				uploadedFiles[i] = response.body.secure_url;
+				uploadedFiles.push(response.body.secure_url);
 				this.setState({uploadedFiles: uploadedFiles});
-
-			
 			}
 		});
 		}
 	window.alert('Finished Uploaded');
-	console.log(this.state.uploadedFiles);
 	}
 
 	_handleDelete(e,value) {
@@ -118,10 +152,15 @@ export class BookForm extends React.Component{
 				if(typeof this.state.imagePreviewUrl[value] !='undefined'){
 				const files = this.state.files;
 				const imagePreviewUrl = this.state.imagePreviewUrl;
+				const downloadedFiles = this.state.downloadedFiles;
+				
 				files.splice(value,1);
 				imagePreviewUrl.splice(value,1);
+				imagePreviewUrl[3] ='images.jpg';
+				downloadedFiles.splice(value,1);
+				downloadedFiles[3] ='images.jpg';
 	
-				this.setState({files: files,imagePreviewUrl: imagePreviewUrl});
+				this.setState({files: files,imagePreviewUrl: imagePreviewUrl, downloadedFiles:downloadedFiles});
 				this.counter --;
 			}	
 	}	
@@ -138,10 +177,18 @@ export class BookForm extends React.Component{
 		const imagePreviewUrl = this.state.imagePreviewUrl;
 
 		reader.onloadend = () => {
-			if(this.counter == 4) {window.alert('Image upload limit exceeded'); return }
-			this.counter ++;
+			var index;
+			for(var i=0; i<4; i++)
+			{
+				if(imagePreviewUrl[i] =='images.jpg') {
+					index = i;
+					break;
+				}
+			}
+
+			if(imagePreviewUrl[3]!='images.jpg') {window.alert('Image upload limit exceeded'); return }
 			files.push(file);
-			imagePreviewUrl.push(reader.result);
+			imagePreviewUrl[index] = reader.result;
 			this.setState({files: files,imagePreviewUrl: imagePreviewUrl});
 		}
 		reader.readAsDataURL(file);	
@@ -150,6 +197,12 @@ export class BookForm extends React.Component{
 
 	handleAddEvent(event)
 	{
+	if(this.state.files.length!=0)
+		if(this.state.uploadedFiles==0)
+			{ window.alert('Upload your images first!')
+			  return;	
+			}
+
 		var img1='images.jpg',img2='images.jpg',img3='images.jpg',img4='images.jpg';
 		if(typeof this.state.uploadedFiles[0] !='undefined') {img1 = this.state.uploadedFiles[0]}
 		if(typeof this.state.uploadedFiles[1] !='undefined') {img2 = this.state.uploadedFiles[1]}
@@ -165,8 +218,8 @@ export class BookForm extends React.Component{
 		"book_author" : this.state.book_author,
 		"book_price1" : this.state.book_price1,
 		"book_price2" : this.state.book_price2,
-		"cat_id" : this.state.cat_id,
-		"lng_id" : this.state.lng_id,
+		"cat_id" : this.state.cat_id ? this.state.cat_id : '1',
+		"lng_id" : this.state.lng_id ? this.state.lng_id : '1',
 		"book_img1" : img1,
 		"book_img2" : img2,
 		"book_img3" : img3,
@@ -176,34 +229,37 @@ export class BookForm extends React.Component{
 	}
 
 	render()
-	{
-	const newCategory = this.props.categoriesToProps.category;
-	const loading = this.props.categoriesToProps.loading;
-	const error = this.props.categoriesToProps.error;
-
-
-
+	{	
 	var imagerows = [];
 		for(let i=0; i<=3; i++){
-			imagerows.push(<div className="col-md-3 form-group" key={Math.random()}><img src={this.state.imagePreviewUrl[i]? this.state.imagePreviewUrl[i]:'images/images.jpg' } onClick={(e)=>this._handleDelete(e,i)} width="150"/></div>);
+			imagerows.push(<div className="col-md-3 form-group" key={Math.random()}><img src={this.state.imagePreviewUrl[i]} onClick={(e)=>this._handleDelete(e,i)} width="150"/></div>);
 		}
 
 
-	if(loading) {
-      return <div><h2>Add new category</h2><h3>Loading...</h3><img id="imgloading" src="images/giphy.gif"/></div>      
-    } else if(error) {
-      return <div className="alert alert-danger">Error: {error.message}</div>
+	if(this.props.newBookToProps.loading) {
+      return <div><h2>Add a new book</h2><h3>Loading...</h3><img id="imgloading" src="images/giphy.gif"/></div>      
+    } else if(this.props.newBookToProps.error) {
+      return <div className="alert alert-danger">Error: {this.props.newBookToProps.error.message}</div>
     }
 
     if(this.props.activeBookToProps.loading) {
-      return <div><h2>Editing category</h2><h3>Loading...</h3><img id="imgloading" src="images/giphy.gif"/></div>      
+      return <div><h2>Editing book</h2><h3>Loading...</h3><img id="imgloading" src="images/giphy.gif"/></div>      
     } else if(this.props.activeBookToProps.error) {
       return <div className="alert alert-danger">Error: {this.props.activeBookToProps.error.message}</div>
     }
+
+    var subbutton;
+    if(this.props.activeBookToProps.book)
+    subbutton = (<button type="submit" className="btn btn-primary form-control"  onClick={()=>this.handleSaveEvent()}><span className="glyphicon glyphicon-ok"></span> Save Book</button>)
+	else
+    subbutton = (<button type="submit" className="btn btn-primary form-control"  onClick={()=>this.handleAddEvent()}><span className="glyphicon glyphicon-ok"></span> Add Book</button>)
+		
 		
 		return(
 			<div className="row">
-			<h2>Book Add : </h2>    
+			<h2>{this.props.activeBookToProps.book ? 'Book Edit :':'Book Add'} </h2>    
+			{this.props.activeBookToProps.updated ? <div className="alert alert-success"><strong>Success!</strong> The Book edited, ID - {this.props.activeBookToProps.book.book_id}</div>:''}
+			{this.props.newBookToProps.book ? <div className="alert alert-success"><strong>Success!</strong> The Book added, ID - {this.props.newBookToProps.book.book_id}</div>:''}
 			
 			<div className="form-group col-md-12">
 			<label htmlFor="catname">Book name:</label>
@@ -241,23 +297,28 @@ export class BookForm extends React.Component{
 
 			<div className="col-md-6 form-group">	
 			<label htmlFor="catname">Category:</label>
-			<select className="form-control" name="cat_id" value={this.state.cat_id || ''} onChange={this.handleInputChange} >
+			<select className="form-control" name="cat_id" value={this.state.cat_id || '1'} onChange={this.handleInputChange} >
 			{this.props.categoriesToProps.categories.map((category)=>(
 				<option key={category.cat_id} value={category.cat_id}>{category.cat_name}</option>)
 				)
 			}
 			</select>		
 			</div>
+			
 			<div className="col-md-6 form-group">	
-			<label htmlFor="catname">Language:</label>
-			<input type="text" className="form-control" name="lng_id" onChange={this.handleInputChange} value={this.state.lng_id || ''}/>		
+			<label htmlFor="catname">Lanuages:</label>
+			<select className="form-control" name="lng_id" value={this.state.lng_id || '1'} onChange={this.handleInputChange} >
+			{this.props.lngsToProps.lngs.map((lng)=>(
+				<option key={lng.lng_id} value={lng.lng_id}>{lng.lng_name}</option>)
+				)
+			}
+			</select>		
 			</div>
 
 			<div className="col-md-12 form-group">	
 			<label htmlFor="catname">Images:</label>
 			</div>
 			
-		
 			
 			<div className="row">
 			<div className="col-md-6"><input className="form-control" type="file" onChange={(e)=>this._handleImageChange(e)} /></div>
@@ -269,15 +330,12 @@ export class BookForm extends React.Component{
 			{imagerows}
 			</div>
 
-		
-
-
 			
 			<div className="col-md-6 form-group">	
-			<button type="submit" className="btn btn-primary form-control" onClick={()=>this.handleAddEvent()}><span className="glyphicon glyphicon-ok"></span> Add Book</button>
+			{subbutton}
 			</div>
 			<div className="col-md-6 form-group">	
-			<Link to="/category" className="btn btn-warning form-control"><span className="glyphicon glyphicon-share"></span> Go back</Link>
+			<Link to="/book" className="btn btn-warning form-control"><span className="glyphicon glyphicon-share"></span> Go back</Link>
 			</div>
 			
 			</div>

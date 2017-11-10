@@ -7,11 +7,13 @@ import configureStore from './store/configureStore';
 
 import { fetchCategories } from './actions/categories';
 import { fetchBooks } from './actions/books';
+import { fetchLanguages } from './actions/languages';
 
 export const store=configureStore();
 
 store.dispatch(fetchCategories());
 store.dispatch(fetchBooks());
+store.dispatch(fetchLanguages());
 
 ReactDOM.render(
 	<Provider store={store}>

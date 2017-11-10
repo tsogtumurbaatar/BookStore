@@ -1,5 +1,5 @@
 import React from 'react';
-import {BooksList} from '../components/BooksList'; 
+import {FrontPageBooks} from '../components/FrontPageBooks'; 
 import {connect} from 'react-redux';
 import { fetchBooks, removeBooks, removeBooksReset, filterAddBook } from '../actions/books';
 
@@ -34,7 +34,7 @@ const mapStateToProps = (state) =>{
 	}
 }
 
-export const BooksListContainer = connect( 
+export default connect( 
 	mapStateToProps,
 	mapDispatchToProps
-	)(BooksList)
+	)(FrontPageBooks)

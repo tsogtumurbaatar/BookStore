@@ -229,7 +229,19 @@ export function saveBook(book) {
 		return fetch('http://localhost/bookstore/public/api/book/save', { method: 'POST',
 			body: JSON.stringify({  book_id : book.book_id,
 									book_name : book.book_name,
-								    book_desc : book.book_desc	
+								   book_motto:book.book_motto,	
+								   book_desc : book.book_desc,
+								   book_isbn : book.book_isbn,
+								   book_publisher : book.book_publisher,
+								   book_author : book.book_author,
+								   book_price1 : book.book_price1,
+								   book_price2 : book.book_price2,
+								   cat_id : book.cat_id,
+								   lng_id : book.lng_id,
+								   book_img1 : book.book_img1,
+								   book_img2 : book.book_img2,
+								   book_img3 : book.book_img3,
+								   book_img4 : book.book_img4
 			}),
 			headers: {
 				'Accept': 'application/json',
