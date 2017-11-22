@@ -2,23 +2,13 @@ import React from 'react';
 import {BookDetail} from '../components/BookDetail'; 
 import {connect} from 'react-redux';
 import { fetchBook } from '../actions/books';
+import { addCart } from '../actions/cartItems';
 
 const mapDispatchToProps = (dispatch) =>{
 	return {
-		fetchBook:(book_id) => 				{ dispatch(fetchBook(book_id))}
+		fetchBook:(book_id) => 		{ dispatch(fetchBook(book_id))},
+		addCart:(book,qty) => 		{ dispatch(addCart(book, qty))}
 	}
-}
-
-
-const searchEventHandle =(books, filter) =>{
-		var updatedList = books;
-		updatedList = updatedList.filter(function(item){
-			if(item.book_name !=null)
-			return item.book_name.toLowerCase().search(filter.toLowerCase()) !== -1;
-		else
-			return item.book_name;
-		});
-		return updatedList
 }
 
 

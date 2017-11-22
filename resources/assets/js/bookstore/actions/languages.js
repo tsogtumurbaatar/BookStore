@@ -70,26 +70,26 @@ export function fetchLanguagesFailure(error) {
 
 export function addLanguage(lng) {
 	return (dispatch) => {
+		let token = sessionStorage.getItem('jwtToken');
+		   if(!token || token === '') {
+		    window.alert('Unauthenticated');
+		    return;
+		   }
+		let userName = sessionStorage.getItem('jwtUserName');
+		   if(userName!='admin') {
+		    window.alert('Permission denied');
+		    return;
+		   }
+
 		dispatch(addLanguageStart())
 		return fetch('http://localhost/bookstore/public/api/lng/add', { method: 'POST',
 			body: JSON.stringify({ lng_name : lng.lng_name,
-								   lng_motto:lng.lng_motto,	
-								   lng_desc : lng.lng_desc,
-								   lng_isbn : lng.lng_isbn,
-								   lng_publisher : lng.lng_publisher,
-								   lng_author : lng.lng_author,
-								   lng_price1 : lng.lng_price1,
-								   lng_price2 : lng.lng_price2,
-								   cat_id : lng.cat_id,
-								   lng_id : lng.lng_id,
-								   lng_img1 : lng.lng_img1,
-								   lng_img2 : lng.lng_img2,
-								   lng_img3 : lng.lng_img3,
-								   lng_img4 : lng.lng_img4
+								   lng_desc : lng.lng_desc
 			}),
 			headers: {
 				'Accept': 'application/json',
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				'Authorization':'Bearer '+ token
 			}
 		})
 		.then( response => Promise.all([response, response.json()]))
@@ -133,13 +133,20 @@ export function addLanguageReset() {
 
 export function removeLanguages(lng_ids) {
 	return (dispatch) => {
+	let token = sessionStorage.getItem('jwtToken');
+		   if(!token || token === '') {
+		    window.alert('Unauthenticated');
+		    return;
+		   }
+
 		dispatch(removeLanguagesStart())
 		return fetch('http://localhost/bookstore/public/api/lng/remove', { method: 'POST',
 			body: JSON.stringify({ lng_ids : lng_ids	
 			}),
 			headers: {
 				'Accept': 'application/json',
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				'Authorization':'Bearer '+ token
 			}
 		})
 		.then( response => Promise.all([response, response.json()]))
@@ -225,27 +232,22 @@ export function fetchLanguageReset() {
 
 export function saveLanguage(lng) {
 	return (dispatch) => {
+		let token = sessionStorage.getItem('jwtToken');
+		   if(!token || token === '') {
+		    window.alert('Unauthenticated');
+		    return;
+		   }
+
 		dispatch(saveLanguageStart())
 		return fetch('http://localhost/bookstore/public/api/lng/save', { method: 'POST',
 			body: JSON.stringify({  lng_id : lng.lng_id,
 									lng_name : lng.lng_name,
-								   lng_motto:lng.lng_motto,	
-								   lng_desc : lng.lng_desc,
-								   lng_isbn : lng.lng_isbn,
-								   lng_publisher : lng.lng_publisher,
-								   lng_author : lng.lng_author,
-								   lng_price1 : lng.lng_price1,
-								   lng_price2 : lng.lng_price2,
-								   cat_id : lng.cat_id,
-								   lng_id : lng.lng_id,
-								   lng_img1 : lng.lng_img1,
-								   lng_img2 : lng.lng_img2,
-								   lng_img3 : lng.lng_img3,
-								   lng_img4 : lng.lng_img4
+								   lng_desc : lng.lng_desc
 			}),
 			headers: {
 				'Accept': 'application/json',
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				'Authorization':'Bearer '+ token
 			}
 		})
 		.then( response => Promise.all([response, response.json()]))

@@ -9,8 +9,12 @@ class WelcomePage extends React.Component{
 		if(this.props.params.bookid)
 		return <BookDetailContainer bookid={this.props.params.bookid}/>
 		else
-		return <FrontPageBooksContainer />
-
+		{
+			return <FrontPageBooksContainer 
+							catid={this.props.location.query.catid?this.props.location.query.catid:'showall'}
+							lngid={this.props.location.query.lngid?this.props.location.query.lngid:'showall'}
+							/>			
+		}
 	}	
 }
 

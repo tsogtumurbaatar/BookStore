@@ -1,20 +1,23 @@
 import React from 'react';
+import {UserReviewsConn} from './UserReviews';
+import { Link, hashHistory } from 'react-router';
+
 
 var divStyle = {
 	paddingBottom: 15
 };
-
-
 
 export class BookDetail extends React.Component{
 	constructor(props){
 		super(props);
 		this.state={
 			book:{},
-			showReview:''
+			quantity:1
 		}
-		this.handleClick = this.handleClick.bind(this);
-		this.handleCloseClick = this.handleCloseClick.bind(this);
+		this.onClickMinus = this.onClickMinus.bind(this);
+		this.onClickPlus = this.onClickPlus.bind(this);
+		this.onClickAddCart = this.onClickAddCart.bind(this);
+		
 	}
 
 	componentWillMount() {
@@ -31,19 +34,27 @@ export class BookDetail extends React.Component{
 		}
 	}
 
-	handleClick(event)
+	onClickMinus(event)
 	{
-		this.setState({showReview:1});
+		if(this.state.quantity>1)
+		this.setState({quantity:this.state.quantity-1});
 	}
 
-	handleCloseClick(event)
+	onClickPlus(event)
 	{
-		this.setState({showReview:''});
+		if(this.state.quantity>0)
+		this.setState({quantity:this.state.quantity+1});
 	}
+
+	onClickAddCart(event)
+	{
+		this.props.addCart(this.state.book, this.state.quantity);
+		window.alert('Product added to Shopping cart')
+	}
+
 
 	render()
 	{
-
 		if(this.props.activeBookToProps.loading) {
 			return <div><h2>Editing book</h2><h3>Loading...</h3><img id="imgloading" src="images/giphy.gif"/></div>      
 		} else if(this.props.activeBookToProps.error) {
@@ -52,76 +63,86 @@ export class BookDetail extends React.Component{
 
 		var images=[];
 		if(this.state.book.book_img2!='images.jpg') images.push(<div className="col-md-4" key={Math.random()}><img src={this.state.book.book_img2} width="50"/></div>)
-		if(this.state.book.book_img3!='images.jpg') images.push(<div className="col-md-4" key={Math.random()}><img src={this.state.book.book_img3} width="50"/></div>)
-		if(this.state.book.book_img4!='images.jpg') images.push(<div className="col-md-4" key={Math.random()}><img src={this.state.book.book_img4} width="50"/></div>)
+			if(this.state.book.book_img3!='images.jpg') images.push(<div className="col-md-4" key={Math.random()}><img src={this.state.book.book_img3} width="50"/></div>)
+				if(this.state.book.book_img4!='images.jpg') images.push(<div className="col-md-4" key={Math.random()}><img src={this.state.book.book_img4} width="50"/></div>)
 
-		return(
-			<div className="row">
-			<div className="col-md-4">
-				<div className="col-md-12">
-				<br/><img src={this.state.book.book_img1} width="250" style={divStyle} />
-				</div>
-				<div className="col-md-12">
-				{images}
-				</div>
+					return(
+						<div className="row">
+						<div className="col-md-4">
+						<div className="col-md-12">
+						<br/><img src={this.state.book.book_img1} width="200" style={divStyle} />
+						</div>
+						<div className="col-md-12">
+						{images}
+						</div>
+						<div className="col-md-12">
+						<br/><br/>
 
-			</div>
-			<div className="col-md-8">
+						<div className="row">
+						<div className="col-md-4"> Qty : </div>
+						<div className="col-md-2"><a onClick={this.onClickMinus}><span className="glyphicon glyphicon-minus"></span></a></div> 	
+						<div className="col-md-4"><input type="text" value={this.state.quantity} readOnly className="form-control"/></div> 
+						<div className="col-md-2"><a onClick={this.onClickPlus}><span className="glyphicon glyphicon-plus"></span></a></div> 
+						</div>
+						<br/>
+						<button type="button" className="btn btn-danger form-control"  onClick={this.onClickAddCart}><span className="glyphicon glyphicon-shopping-cart"></span> Add to Shopping Cart</button>
+						<br/><br/>
+						<button type="button" className="btn btn-info form-control"  onClick={()=>hashHistory.goBack()}><span className="glyphicon glyphicon-circle-arrow-left"></span> Go Back</button>
+		
+						</div>
 
-			<div className="col-md-12">
-			<h2>{this.state.book.book_name}</h2>
-			</div>
+						</div>
+						<div className="col-md-8">
 
-			<div className="col-md-12" style={divStyle}>
-			by <b>{this.state.book.book_author}</b>
-			</div>
+						<div className="col-md-12">
+						<h2>{this.state.book.book_name}</h2>
+						</div>
 
-			<div className="col-md-6" style={divStyle}>
-			Price: {this.state.book.book_price1}$
-			</div>
+						<div className="col-md-12" style={divStyle}>
+						by <b>{this.state.book.book_author}</b>
+						</div>
 
-			<div className="col-md-6" style={divStyle}>
-			Sale: {this.state.book.book_price2}$
-			</div>
+						<div className="col-md-6" style={divStyle}>
+						Price: {this.state.book.book_price1}$
+						</div>
 
-			<div className="col-md-12" style={divStyle}>
-			Category: <b>{this.state.book.cat_name}</b>
-			</div>
+						<div className="col-md-6" style={divStyle}>
+						Sale: {this.state.book.book_price2}$
+						</div>
 
-			<div className="col-md-12" style={divStyle}>
-			Language: <b>{this.state.book.lng_name}</b>
-			</div>
+						<div className="col-md-12" style={divStyle}>
+						Category: <b>{this.state.book.cat_name}</b>
+						</div>
 
-			<div className="col-md-12" style={divStyle}>
-			<b>{this.state.book.book_motto}</b>
-			</div>
-			<div className="col-md-12" style={divStyle}>
-			{this.state.book.book_desc}
-			</div>
+						<div className="col-md-12" style={divStyle}>
+						Language: <b>{this.state.book.lng_name}</b>
+						</div>
 
-			<div className="col-md-12" style={divStyle}>
-			ISBN: <b>{this.state.book.book_isbn}</b>
-			</div>
+						<div className="col-md-12" style={divStyle}>
+						<b>{this.state.book.book_motto}</b>
+						</div>
+						<div className="col-md-12" style={divStyle}>
+						{this.state.book.book_desc}
+						</div>
 
-			<div className="col-md-12" style={divStyle}>
-			Publisher: <b>{this.state.book.book_publisher}</b>
-			</div>
+						<div className="col-md-12" style={divStyle}>
+						ISBN: <b>{this.state.book.book_isbn}</b>
+						</div>
 
-			</div>
-			
+						<div className="col-md-12" style={divStyle}>
+						Publisher: <b>{this.state.book.book_publisher}</b>
+						</div>
 
-			<div className="col-md-12">
-			<input type="button" onClick={this.handleClick}  value="Write a customer review"/>
-			</div>
+						</div>
 
-			<div className="col-md-12" style={{display: this.state.showReview ? 'block' : 'none' }}>
-			<input type="text" />
-			<input type="button" onClick={this.handleCloseClick}  value="Close Div"/>
-			
-			</div>
-			</div>
-			)
-	}
+						<UserReviewsConn
+						book_id = {this.state.book.book_id}
+						/>			
 
 
-}
+						</div>
+						)
+			}
+
+
+		}
